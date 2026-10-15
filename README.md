@@ -27,6 +27,8 @@ the Claude Agent SDK first, then OpenCode and a local vLLM loop so nobody needs 
 
 👉 **Start here:** [the landing page](https://generaldussduss.github.io/apollo/) explains it in plain English, with the same bug run two ways side by side.
 
+**This repo is the showcase.** The code lives elsewhere until it's ready, and it'll land here as releases, not as a trickle of commits. Watch → Releases and you'll know the moment it does.
+
 ## Status
 
 🟢 **Stage 1 · the walls** — permission gate, sandbox folder, loop catcher, logbook, kill switch. Being built right now.
@@ -47,17 +49,6 @@ the Claude Agent SDK first, then OpenCode and a local vLLM loop so nobody needs 
 - 👁 **Watch → Custom → Releases** — a notification only when a real version ships. Zero noise.
 - 💬 **[Discussions](https://github.com/GeneralDussDuss/apollo/discussions)** — questions, which AI brain to plug in next, show what you built.
 - 📡 **RSS:** `https://github.com/GeneralDussDuss/apollo/releases.atom`
-
-## For builders
-
-The full architecture lives in [`APOLLO_SPEC.md`](APOLLO_SPEC.md). Rules for any coding agent working in this repo are in [`AGENTS.md`](AGENTS.md).
-The site in [`docs/`](docs/) is the GitHub Pages landing page.
-
-```
-uv sync
-uv run pytest
-uv run python -m apollo.evals.deny_tests
-```
 
 ## Honest limits
 
