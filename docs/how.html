@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Apollo · How it works</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="shared.css">
+<style>
+.hdr{padding-block:64px 24px}
+.idea{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.q{font-family:var(--mono);font-size:13px;background:#07060a;border:1px solid var(--line);border-radius:6px;padding:14px;color:var(--fg-2);white-space:pre-wrap;line-height:1.7}
+.q .k{color:var(--gold-2)}.q .d{color:var(--blood)}.q .g{color:var(--em)}
+
+/* the wall */
+.wall{background:linear-gradient(180deg,var(--surface),var(--bg-2));border:1px solid var(--line);border-radius:6px;padding:26px;display:grid;grid-template-columns:1fr 1fr;gap:26px;position:relative;overflow:hidden}
+.wall::before{content:"";position:absolute;left:50%;top:26px;bottom:26px;width:2px;background:linear-gradient(180deg,transparent,var(--gold),var(--gold),transparent);box-shadow:0 0 24px var(--gold-dim);opacity:.8}
+.wall .lhs,.wall .rhs{min-width:0;display:flex;flex-direction:column;gap:12px}
+.wall label{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-3)}
+.throw{display:flex;flex-wrap:wrap;gap:8px}
+.throw button{font:inherit;font-family:var(--mono);font-size:12.5px;padding:9px 12px;border-radius:4px;border:1px solid var(--line-2);background:#07060a;color:var(--fg-2);cursor:pointer;transition:transform .25s var(--ease),border-color .25s;max-width:100%;text-align:left}
+.throw button:hover{transform:translateY(-2px);border-color:var(--gold)}
+.throw button.thrown{animation:fling .55s var(--ease)}
+@keyframes fling{30%{transform:translateX(40px) rotate(2deg);opacity:.5}60%{transform:translateX(80px);opacity:0}61%{transform:none;opacity:0}100%{opacity:1}}
+.custom{display:flex;gap:8px}
+.custom input{flex:1;min-width:0;font-family:var(--mono);font-size:13px;padding:11px 12px;border-radius:4px;border:1px solid var(--line-2);background:#07060a;color:var(--fg)}
+.verdict{min-height:230px;border:1px solid var(--line);border-radius:6px;padding:20px;background:#07060a;display:flex;flex-direction:column;gap:10px;position:relative}
+.stamp{font-family:var(--display);font-weight:900;font-size:clamp(34px,5vw,56px);letter-spacing:.08em;line-height:1;transform:scale(2.2) rotate(-8deg);opacity:0;transform-origin:left center}
+.stamp.show{animation:stamp .5s cubic-bezier(.2,1.4,.3,1) forwards}
+@keyframes stamp{to{transform:scale(1) rotate(-4deg);opacity:1}}
+.stamp.allow{color:var(--em);text-shadow:0 0 30px var(--em-dim)}.stamp.ask{color:var(--gold-2);text-shadow:0 0 30px var(--gold-dim)}.stamp.deny{color:var(--blood);text-shadow:0 0 30px var(--blood-dim)}
+.verdict .cmd{font-family:var(--mono);font-size:12.5px;color:var(--fg-3);word-break:break-all}
+.verdict .why{font-size:16px;color:var(--fg);max-width:40ch}
+.verdict .sub{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--fg-2)}
+.verdict .tele{font-family:var(--mono);font-size:11.5px;color:var(--fg-3);margin-top:auto;border-top:1px solid var(--line);padding-top:10px}
+
+/* promises with tilt */
+.tilt{transform-style:preserve-3d;will-change:transform}
+.tilt .shine{position:absolute;inset:0;border-radius:6px;background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%),rgba(243,210,122,.14),transparent 45%);pointer-events:none;opacity:0;transition:opacity .3s}
+.tilt:hover .shine{opacity:1}
+.promise .k{font-family:var(--display);font-size:44px;font-weight:900;line-height:1}
+
+/* kill */
+.kill{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center;background:linear-gradient(180deg,var(--surface),var(--bg-2));border:1px solid var(--line);border-radius:6px;padding:28px}
+.kbtn{width:170px;height:170px;border-radius:50%;border:0;cursor:pointer;position:relative;display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:22px;letter-spacing:.14em;color:#fff;background:radial-gradient(circle at 40% 35%,#ff6b74,var(--blood) 55%,#7a1f27);box-shadow:0 20px 50px rgba(201,65,76,.35),inset 0 -8px 20px rgba(0,0,0,.4);transition:transform .15s}
+.kbtn:active{transform:scale(.94)}
+.kbtn svg{position:absolute;inset:-10px;width:calc(100% + 20px);height:calc(100% + 20px);transform:rotate(-90deg)}
+.kbtn circle{fill:none;stroke:var(--gold);stroke-width:3;stroke-dasharray:600;stroke-dashoffset:600;transition:stroke-dashoffset 2s linear}
+.kbtn.go circle{stroke-dashoffset:0}
+.klog{font-family:var(--mono);font-size:12.5px;line-height:1.9;color:var(--fg-2);min-height:150px;white-space:pre-wrap}
+.klog .g{color:var(--em)}.klog .w{color:var(--gold-2)}
+.klog .big{font-family:var(--display);font-size:28px;font-weight:900;color:var(--em);letter-spacing:.08em}
+.phonewrap{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+.phonewrap ul{margin:14px 0 0;padding-left:18px;color:var(--fg-2);display:flex;flex-direction:column;gap:8px;font-size:15.5px}
+.phonewrap b{color:var(--fg)}
+.buzz{animation:buzz .5s 1.2s both}
+@keyframes buzz{0%,100%{transform:none}20%{transform:translateX(-4px) rotate(-1deg)}40%{transform:translateX(4px) rotate(1deg)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+@media (max-width:860px){.idea,.wall,.kill,.phonewrap{grid-template-columns:1fr}.wall::before{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav"><div class="nav-in"><a class="brand" href="index.html"><span class="sun"></span>APOLLO</a><div class="links"><a href="index.html">Home</a><a href="story.html">The incident</a><a href="how.html">How it works</a><a href="brains.html">Any brain</a><a href="join.html">Get in</a><a class="star" href="https://github.com/GeneralDussDuss/apollo" target="_blank" rel="noopener">★ Star</a></div></div></nav>
+  <main>
+    <section class="hdr stack">
+      <span class="eyebrow">Part 3 · The one idea</span>
+      <h2>A rule in a prompt is a suggestion.<br><span class="gold">A rule in code is a wall.</span></h2>
+      <p class="lede">Every other agent asks the AI nicely to behave. Apollo doesn't ask. It checks every action the AI wants to take <b>before it happens</b>, in code the AI can't see or change, and either lets it through, blocks it, or buzzes your phone.</p>
+    </section>
+    <div class="rule"></div>
+
+    <section class="idea">
+      <div class="card red rv"><h3><span class="n">THE OLD WAY</span>Security by politeness</h3><div class="q"><span class="d">"You are a helpful assistant.
+Please be careful and always ask before
+deleting files or pushing code."</span></div><p>That's it. That's the whole defence. The AI reads it, agrees, and then does whatever seems reasonable in the moment. Including things that aren't.</p></div>
+      <div class="card em rv"><h3><span class="n">THE APOLLO WAY</span>Security by wall</h3><div class="q">AI wants to run: <span class="k">git push --force</span>
+→ reversible? <span class="d">NO</span>
+→ inside the allowed folder? <span class="k">irrelevant</span>
+→ verdict: <span class="d">BLOCKED.</span> logged. AI told why.
+→ it never gets to run it. <span class="g">not once.</span></div><p>The AI can want whatever it wants. The wall decides. And the wall keeps receipts.</p></div>
+    </section>
+
+    <section>
+      <span class="eyebrow em">Throw something at the wall</span>
+      <h2 style="margin-top:14px">You be the AI. Try to get something through.</h2>
+      <p class="copy" style="margin-top:12px">Pick a move, or type your own. The wall stamps every one. This is a simplified copy of the real gate's rules.</p>
+      <div class="wall rv" style="margin-top:22px">
+        <div class="lhs">
+          <label>the AI wants to…</label>
+          <div class="throw" id="throw"></div>
+          <label style="margin-top:6px">or type a command</label>
+          <div class="custom"><input id="cmd" type="text" placeholder="e.g. git push origin main" spellcheck="false"><button class="btn" id="go">Throw</button></div>
+        </div>
+        <div class="rhs">
+          <label>the wall says</label>
+          <div class="verdict" id="verdict"><div class="stamp" id="stamp"></div><div class="cmd" id="vcmd">pick something on the left</div><div class="why" id="vwhy"></div><div class="sub" id="vsub"></div><div class="tele" id="vtele">logbook: waiting</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <span class="eyebrow">Part 4 · Seven promises</span>
+      <h2 style="margin-top:14px">Each one is a fix for a real scar.</h2>
+      <div class="grid3" style="margin-top:22px">
+        <div class="card tilt promise rv"><span class="shine"></span><span class="k gold">I</span><h3>It asks before anything it can't undo</h3><p>Flashing a chip, pushing code, installing stuff: your phone buzzes with the exact command. Tap Allow or Deny from the lock screen. No answer in 10 minutes? That's a no.</p></div>
+        <div class="card tilt promise rv"><span class="shine"></span><span class="k gold">II</span><h3>It lives in one folder and can't leave</h3><p>It can read and write inside its sandbox. Everything else on the machine is behind a locked door, including its own settings and your passwords.</p></div>
+        <div class="card tilt promise rv"><span class="shine"></span><span class="k gold">III</span><h3>It notices when it's spinning and restarts with a clear head</h3><p>Same mistake twice? Blocked. Still stuck? It writes itself a short note, wipes its memory of the mess, and starts fresh from the note.</p></div>
+        <div class="card tilt promise rv"><span class="shine"></span><span class="k gold">IV</span><h3>Every action is logged, and the log can't be faked</h3><p>Each entry is chained to the one before it, so nobody can quietly edit history. Not the AI, not a bug, not a bad day.</p></div>
+        <div class="card tilt promise rv"><span class="shine"></span><span class="k gold">V</span><h3>One big red button</h3><p>Phone, desktop hotkey, or a single command. Everything stops in under two seconds, and your work is still there because it all happened on a separate branch.</p></div>
+        <div class="card tilt promise rv"><span class="shine"></span><span class="k gold">VI</span><h3>It stays on your machine</h3><p>Voice in, voice out, all local. No cloud microphone, no Discord bot, no third party in the middle. You reach it from your phone over your own private network.</p></div>
+        <div class="card tilt promise em rv" style="grid-column:1/-1"><span class="shine"></span><span class="k gold">VII</span><h3>It doesn't get to say it's right. It has to prove it.</h3><p>"The file is missing"? Apollo makes it run the command and show the output before the claim counts. "It's fixed"? Nothing is marked done until the build and tests actually pass, and the agent physically can't finish while they're red. A second AI, in a separate room with no memory of the work, grades the result, because every AI grades its own homework generously. And the logbook is written by Apollo, never by the AI, so its version of events is never the only version.</p><p class="plain"><b>Plain English</b><br>The contractor doesn't tell you the wall is load-bearing. He shows you the blueprint, the inspector signs off, and the camera footage is kept by someone else.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <span class="eyebrow red">Promise V, live</span>
+      <h2 style="margin-top:14px">Press it.</h2>
+      <div class="kill rv" style="margin-top:22px">
+        <button class="kbtn" id="kbtn" aria-label="Kill switch"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="95"/></svg>KILL</button>
+        <div class="klog" id="klog">Apollo is mid-task: editing files, building firmware, 11 steps in.
+Press the button. Watch the clock.</div>
+      </div>
+    </section>
+
+    <section>
+      <span class="eyebrow">Promise I, live</span>
+      <h2 style="margin-top:14px">This is what "asking permission" looks like.</h2>
+      <div class="phonewrap" style="margin-top:22px">
+        <div class="phone buzz rv">
+          <div class="time">private network · 23:41</div>
+          <div class="notif">
+            <div class="app"><i></i>Apollo · needs a decision</div>
+            <div class="ttl">Flash firmware to the pager?</div>
+            <div class="raw">pio run -e tlora_pager -t upload --upload-port COM7
+project: sonnet · branch: apollo/lora-rx-fix</div>
+            <div class="meta"><span>the real command, not a summary</span><span id="ttl">09:58</span></div>
+            <div class="acts"><button class="ok" id="pOk">Allow</button><button class="no" id="pNo">Deny</button></div>
+          </div>
+          <div class="result" id="pres">waiting · no answer = no</div>
+        </div>
+        <div>
+          <p class="lede">Tap one. <b>That's the whole job.</b></p>
+          <ul>
+            <li><b>You see the actual command,</b> not the AI's friendly summary of it. It can't sweet-talk you.</li>
+            <li><b>Each buzz is single-use.</b> The button carries a one-time code. Nothing on the machine, including the AI itself, can press it for you.</li>
+            <li><b>Some things can't be approved at all.</b> Touching its own rules, its own keys, or the network config is a hard no, even if you tap yes.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="starbox rv" style="margin-top:40px"><div><div class="t">Like where this is going?</div><div class="s">A star is the cheapest way to say "build it." It also bumps the repo so more people find it.</div></div><a class="btn" href="https://github.com/GeneralDussDuss/apollo" target="_blank" rel="noopener">★ Star this repo</a></div>
+
+    <div class="next"><span class="lbl">Next</span><a class="big" href="brains.html">Any brain →</a></div>
+  </main>
+  <footer><span>Apollo · built by <a href="https://github.com/GeneralDussDuss" target="_blank" rel="noopener">GeneralDussDuss</a> · 2026</span><span><a href="https://github.com/GeneralDussDuss/apollo" target="_blank" rel="noopener">github.com/GeneralDussDuss/apollo</a> · ★ <a href="https://github.com/GeneralDussDuss/apollo/stargazers" target="_blank" rel="noopener">star it</a> · <a href="https://github.com/GeneralDussDuss/apollo/discussions" target="_blank" rel="noopener">discussions</a></span></footer>
+</div>
+<script src="shared.js"></script>
+</body>
+</html>

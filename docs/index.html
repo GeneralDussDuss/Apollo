@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Apollo: an AI coding agent that can finish your project and cannot wreck your computer.">
+<meta property="og:title" content="Apollo"><meta property="og:description" content="Hermes stole the cattle. Apollo caught him. A hard-gated, local-first AI coding agent.">
+<title>Apollo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="shared.css">
+<style>
+.hero{min-height:78vh;display:grid;align-items:center;position:relative;padding-block:56px 48px}
+.rays{position:absolute;left:50%;top:30%;width:140vmax;height:140vmax;transform:translate(-50%,-50%);background:conic-gradient(from 0deg,transparent 0 9deg,rgba(212,168,75,.06) 9deg 11deg,transparent 11deg 30deg,rgba(212,168,75,.05) 30deg 32deg,transparent 32deg 60deg);animation:spin 120s linear infinite;pointer-events:none;z-index:-1;mask:radial-gradient(circle,#000 0,transparent 55%)}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.halo{position:absolute;left:50%;top:34%;width:520px;height:520px;max-width:90vw;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(212,168,75,.25);box-shadow:0 0 120px rgba(212,168,75,.12) inset,0 0 80px rgba(212,168,75,.08);pointer-events:none;z-index:-1;animation:breathe 7s ease-in-out infinite}
+.halo::before{content:"";position:absolute;inset:40px;border-radius:50%;border:1px solid rgba(46,204,143,.18)}
+@keyframes breathe{50%{transform:translate(-50%,-50%) scale(1.04)}}
+.hero .tag{display:inline-flex;gap:10px;align-items:center;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-2);border:1px solid var(--line-2);padding:8px 14px;border-radius:4px;margin-bottom:28px}
+.hero .tag i{width:8px;height:8px;border-radius:50%;background:var(--em);box-shadow:0 0 12px var(--em);display:inline-block;animation:blink 1.8s infinite}
+@keyframes blink{50%{opacity:.3}}
+.title{display:flex;flex-wrap:wrap;overflow:hidden}
+.title span{display:inline-block;animation:rise 1s var(--ease) both}
+.title span{animation-delay:calc(var(--i) * .07s + .05s)}
+@keyframes rise{from{transform:translateY(110%)}to{transform:none}}
+.sub{font-family:var(--serif);font-size:clamp(24px,4vw,46px);line-height:1.15;margin-top:18px;max-width:24ch;color:var(--fg);animation:pagein 1s .5s var(--ease) both}
+.sub em{font-style:italic;color:var(--gold-2)}
+.sub .no{color:var(--blood);font-style:italic}
+.hero .lede{margin-top:26px;animation:pagein 1s .7s var(--ease) both}
+.hero .cta{margin-top:32px;animation:pagein 1s .9s var(--ease) both}
+.myth{display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}
+.laurel{aspect-ratio:1;max-width:100%;border-radius:50%;border:1px solid var(--gold-3);display:grid;place-items:center;position:relative;background:radial-gradient(circle at 50% 40%,rgba(212,168,75,.12),transparent 60%)}
+.laurel::before,.laurel::after{content:"";position:absolute;inset:14%;border-radius:50%;border:1px dashed rgba(212,168,75,.35);animation:spin 60s linear infinite}
+.laurel::after{inset:26%;border-style:solid;border-color:rgba(46,204,143,.3);animation-direction:reverse;animation-duration:40s}
+.laurel .g{font-family:var(--display);font-size:clamp(40px,8vw,96px);font-weight:900;line-height:1;text-align:center}
+.laurel .g small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--fg-3);margin-top:10px;font-weight:400}
+.teasers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.teasers a{text-decoration:none;color:inherit}
+.teasers .card{height:100%}
+.teasers .card .go{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-2);margin-top:auto}
+@media (max-width:860px){.myth{grid-template-columns:1fr}.teasers{grid-template-columns:1fr 1fr}.hero{min-height:0}}
+@media (max-width:520px){.teasers{grid-template-columns:1fr}}
+/* ===== cinematic intro ===== */
+.intro{position:fixed;inset:0;z-index:100;background:#000;display:grid;place-items:center;overflow:hidden;animation:introOut .9s 3.1s var(--ease) forwards;cursor:pointer}
+.intro.done{display:none}
+@keyframes introOut{to{opacity:0;visibility:hidden}}
+.intro .horizon{position:absolute;left:8%;right:8%;top:58%;height:1px;background:linear-gradient(90deg,transparent,var(--gold-3),var(--gold-2),var(--gold-3),transparent);transform:scaleX(0);animation:draw .9s .15s var(--ease) forwards}
+.intro .sunrise{position:absolute;left:50%;top:58%;width:220px;height:220px;border-radius:50%;transform:translate(-50%,40%) scale(.6);background:radial-gradient(circle at 50% 45%,#fff3c4 0,var(--gold-2) 22%,var(--gold) 48%,var(--gold-3) 70%,transparent 72%);box-shadow:0 0 60px rgba(212,168,75,.35),0 0 160px rgba(212,168,75,.25);animation:rise 1.5s .5s var(--ease) forwards;opacity:0}
+@keyframes rise{to{transform:translate(-50%,-62%) scale(1);opacity:1}}
+.intro .mask{position:absolute;left:0;right:0;top:58%;bottom:0;background:#000;z-index:2}
+.intro .flash{position:absolute;inset:0;background:radial-gradient(circle at 50% 48%,rgba(255,243,196,.9),rgba(212,168,75,.5) 20%,transparent 55%);opacity:0;animation:flash .7s 1.75s ease-out forwards;z-index:3}
+@keyframes flash{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+.intro .word{position:relative;z-index:4;font-family:var(--display);font-weight:900;font-size:clamp(54px,12vw,150px);letter-spacing:.7em;margin-left:.7em;color:transparent;background:linear-gradient(180deg,#fff3c4,var(--gold-2) 40%,var(--gold) 70%,var(--gold-3));-webkit-background-clip:text;background-clip:text;opacity:0;animation:burn 1.1s 1.85s var(--ease) forwards;text-align:center}
+@keyframes burn{0%{opacity:0;letter-spacing:.7em;filter:blur(8px)}100%{opacity:1;letter-spacing:.14em;margin-left:.14em;filter:blur(0)}}
+.intro .tagline{position:absolute;z-index:4;top:calc(50% + clamp(44px,8vw,110px));font-family:var(--mono);font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--fg-3);opacity:0;animation:fadeup .8s 2.5s var(--ease) forwards}
+@keyframes fadeup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.intro .skip{position:absolute;right:max(18px,env(safe-area-inset-right,0px));bottom:max(18px,env(safe-area-inset-bottom,0px));z-index:5;font:inherit;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg-3);background:transparent;border:1px solid var(--line);padding:8px 12px;border-radius:4px;cursor:pointer}
+.intro .grain{position:absolute;inset:0;z-index:4;opacity:.08;pointer-events:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+html.has-intro .title span{animation-delay:calc(var(--i) * .07s + 3.1s)}
+html.has-intro .sub{animation-delay:3.5s}html.has-intro .hero .lede{animation-delay:3.7s}html.has-intro .hero .cta{animation-delay:3.9s}
+html.has-intro .rays{animation-delay:0s}
+@media (prefers-reduced-motion: reduce){.intro{display:none}}
+</style>
+
+</head>
+<body>
+<div class="intro" id="intro" aria-hidden="true"><div class="horizon"></div><div class="sunrise"></div><div class="mask"></div><div class="flash"></div><div class="grain"></div><div class="word">APOLLO</div><div class="tagline">the one who catches</div><button class="skip" id="skip">skip</button></div>
+<script>(function(){var r=matchMedia('(prefers-reduced-motion: reduce)').matches,el=document.getElementById('intro');if(r){el.classList.add('done');return;}document.documentElement.classList.add('has-intro');var end=function(){el.classList.add('done');};el.addEventListener('animationend',function(e){if(e.animationName==='introOut')end();});document.getElementById('skip').addEventListener('click',function(e){e.stopPropagation();document.documentElement.classList.remove('has-intro');end();});el.addEventListener('click',function(){document.documentElement.classList.remove('has-intro');end();});setTimeout(end,4500);})();</script>
+<div class="wrap">
+  <nav class="nav"><div class="nav-in"><a class="brand" href="index.html"><span class="sun"></span>APOLLO</a><div class="links"><a href="index.html">Home</a><a href="story.html">The incident</a><a href="how.html">How it works</a><a href="brains.html">Any brain</a><a href="join.html">Get in</a><a class="star" href="https://github.com/GeneralDussDuss/apollo" target="_blank" rel="noopener">★ Star</a></div></div></nav>
+  <main>
+    <section class="hero">
+      <div class="rays"></div><div class="halo"></div>
+      <div>
+        <span class="tag"><i></i>Being built right now · the Dussmeister's rig</span>
+        <h1 class="title gold"><span style="--i:0">A</span><span style="--i:1">P</span><span style="--i:2">O</span><span style="--i:3">L</span><span style="--i:4">L</span><span style="--i:5">O</span></h1>
+        <p class="sub">An AI that can <em>finish your project</em><br>and <span class="no">can't</span> wreck your computer.</p>
+        <p class="lede">You've seen the demos where an AI writes a whole app. You haven't seen the part where it deletes the wrong folder, loops on one error for an hour, or quietly reads your passwords. <b>Apollo is built so that part can't happen.</b></p>
+        <div class="cta"><a class="btn" href="story.html">What went wrong</a><a class="btn ghost" href="how.html">How Apollo fixes it</a></div>
+      </div>
+    </section>
+
+    <div class="rule"></div>
+
+    <section>
+      <div class="stats">
+        <div class="stat rv"><div class="n gold" data-count="5">0</div><div class="l">ways the old agent burned us. Each one has a fix.</div></div>
+        <div class="stat rv"><div class="n gold" data-count="7">0</div><div class="l">promises Apollo makes in code, not in a prompt.</div></div>
+        <div class="stat rv"><div class="n em" data-count="2" data-pre="&lt; " data-suf="s">0</div><div class="l">from pressing the big red button to everything stopped.</div></div>
+      </div>
+    </section>
+
+    <section class="myth">
+      <div class="stack rv">
+        <span class="eyebrow">Why the name</span>
+        <h2>Hermes stole the cattle.<br><span class="gold">Apollo caught him.</span></h2>
+        <p class="copy">In the myth, Hermes was a few hours old when he snuck out, stole Apollo's sacred cattle, and walked them backwards so the tracks pointed the wrong way. Apollo tracked him down anyway, dragged him in front of Zeus, and made him confess.</p>
+        <p class="copy">We were running an AI agent called Hermes. It did Hermes things. So we built the god who checks the tracks.</p>
+      </div>
+      <div class="laurel rv"><div class="g gold">Ἀπόλλων<small>the one who catches</small></div></div>
+    </section>
+
+    <section>
+      <span class="eyebrow">Start here</span>
+      <div class="teasers" style="margin-top:22px">
+        <a href="story.html"><div class="card red rv"><h3><span class="n">01</span>The incident</h3><p>Five things the old agent did to us, in plain English. Plus the same bug run two ways, side by side.</p><span class="go">Read it →</span></div></a>
+        <a href="how.html"><div class="card rv"><h3><span class="n">02</span>How it works</h3><p>One idea, six promises, and a phone buzz you can tap yourself.</p><span class="go">See it →</span></div></a>
+        <a href="brains.html"><div class="card em rv"><h3><span class="n">03</span>Any brain</h3><p>Claude first. Then any AI, including free ones running on the GPU. The cage is the product.</p><span class="go">Swap it →</span></div></a>
+        <a href="join.html"><div class="card rv"><h3><span class="n">04</span>Get in</h3><p>Where it's at, what's next, and the button you came for.</p><span class="go">Get rowdy →</span></div></a>
+      </div>
+    </section>
+  </main>
+  <footer><span>Apollo · built by <a href="https://github.com/GeneralDussDuss" target="_blank" rel="noopener">GeneralDussDuss</a> · 2026</span><span><a href="https://github.com/GeneralDussDuss/apollo" target="_blank" rel="noopener">github.com/GeneralDussDuss/apollo</a> · ★ <a href="https://github.com/GeneralDussDuss/apollo/stargazers" target="_blank" rel="noopener">star it</a> · <a href="https://github.com/GeneralDussDuss/apollo/discussions" target="_blank" rel="noopener">discussions</a></span></footer>
+</div>
+<script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Apollo · Any brain</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="shared.css">
+<style>
+.hdr{padding-block:64px 24px}
+.router{background:linear-gradient(180deg,var(--surface),var(--bg-2));border:1px solid var(--line);border-radius:6px;padding:26px;display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:4px;overflow:hidden;margin-bottom:16px}
+.seg button{font:inherit;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:11px 14px;background:transparent;color:var(--fg-2);border:0;cursor:pointer}
+.seg button.on{background:var(--gold);color:#1a1200}
+.map{position:relative;min-height:300px}
+.map svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.map path{fill:none;stroke:var(--gold);stroke-width:1.5;stroke-dasharray:6 6;opacity:.7;transition:d .6s var(--ease)}
+.map path.em{stroke:var(--em)}
+.cols{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:0 40%;}
+.col{display:flex;flex-direction:column;gap:10px}
+.node{font-family:var(--mono);font-size:12.5px;padding:10px 12px;border:1px solid var(--line-2);border-radius:4px;background:#07060a;color:var(--fg-2);position:relative;transition:border-color .4s,color .4s,box-shadow .4s}
+.node.lit{border-color:var(--gold);color:var(--gold-2);box-shadow:0 0 20px var(--gold-dim)}
+.node.lit.em{border-color:var(--em);color:var(--em-2);box-shadow:0 0 20px var(--em-dim)}
+.node.dim{opacity:.35}
+.cost{display:flex;flex-direction:column;gap:12px;justify-content:center}
+.cost .n{font-family:var(--display);font-size:clamp(44px,7vw,80px);font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.cost .n small{font-family:var(--mono);font-size:13px;color:var(--fg-3);font-weight:400;margin-left:8px;letter-spacing:.1em}
+.cost ul{margin:0;padding-left:18px;color:var(--fg-2);font-size:15px;display:flex;flex-direction:column;gap:6px}
+.road{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stage .when{font-family:var(--display);font-size:38px;font-weight:900;line-height:1;letter-spacing:.06em}
+.stage.now .when{color:var(--em)}.stage .when{color:var(--gold)}
+.stage ul{margin:12px 0 0;padding-left:18px;color:var(--fg-2);font-size:15px;display:flex;flex-direction:column;gap:6px}
+.progress{margin-top:22px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;border:1px solid var(--line);border-radius:6px;padding:18px 22px;background:var(--surface)}
+.progress .l{font-family:var(--mono);font-size:12px;color:var(--fg-3);letter-spacing:.14em;text-transform:uppercase}
+.progress .r{font-family:var(--display);font-size:24px;font-weight:900;color:var(--em)}
+@media (max-width:860px){.router,.road,.progress{grid-template-columns:1fr}.cols{gap:0 18%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav"><div class="nav-in"><a class="brand" href="index.html"><span class="sun"></span>APOLLO</a><div class="links"><a href="index.html">Home</a><a href="story.html">The incident</a><a href="how.html">How it works</a><a href="brains.html">Any brain</a><a href="join.html">Get in</a><a class="star" href="https://github.com/GeneralDussDuss/apollo" target="_blank" rel="noopener">★ Star</a></div></div></nav>
+  <main>
+    <section class="hdr stack">
+      <span class="eyebrow em">Part 5 · Any brain</span>
+      <h2>The cage is the product.<br><span class="gold">The brain is swappable.</span></h2>
+      <p class="lede">Apollo starts with Claude because it's the best at finishing real projects today. But the walls, the phone buzz, the kill switch and the logbook don't care which AI is inside. <b>Nobody has to be a Claude subscriber to use it.</b></p>
+    </section>
+    <div class="rule"></div>
+
+    <section>
+      <span class="eyebrow">Route the work</span>
+      <h2 style="margin-top:14px">Different jobs, different brains.</h2>
+      <p class="copy" style="margin-top:12px">One task has four roles inside it: look around, plan, build, review. Flip the switch and watch who does what. Cost is for one real firmware fix.</p>
+      <div class="router rv" style="margin-top:22px">
+        <div>
+          <div class="seg"><button class="on" data-mode="p1">Today · Claude only</button><button data-mode="p6">Later · routed</button></div>
+          <div class="map"><svg id="wires"></svg>
+            <div class="cols">
+              <div class="col" id="roles"><div class="node" data-r="explorer">look around</div><div class="node" data-r="planner">plan</div><div class="node" data-r="implementer">build</div><div class="node" data-r="reviewer">review</div><div class="node" data-r="voice">talk back</div></div>
+              <div class="col" id="engines"><div class="node" data-e="claude">Claude</div><div class="node" data-e="gpt">GPT / Gemini</div><div class="node" data-e="local">Local · free · on the GPU</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="cost"><span class="eyebrow">one fix, start to finish</span><div class="n gold" id="costN">$0.84<small>/ task</small></div><ul id="costNotes"></ul></div>
+      </div>
+      <div class="pills" style="margin-top:18px"><span class="pill now">Claude · now</span><span class="pill">GPT · next</span><span class="pill">Gemini · next</span><span class="pill loc">Local on the 5090 · next, free</span><span class="pill">whatever ships in 2027 · plug it in</span></div>
+    </section>
+
+    <section>
+      <span class="eyebrow">Where it's at</span>
+      <h2 style="margin-top:14px">Built in stages. <span class="gold">Each has to prove itself first.</span></h2>
+      <div class="road" style="margin-top:22px">
+        <div class="card stage now em rv"><span class="when">Now</span><ul><li>The walls: permission gate, sandbox folder, loop catcher, logbook, kill switch</li><li>Runs from a terminal on the rig</li><li>Claude as the first brain</li></ul></div>
+        <div class="card stage rv"><span class="when">Next</span><ul><li>Phone buzz approvals from anywhere</li><li>Talk to it, it talks back, all local</li><li>A review bot that double-checks the build bot</li></ul></div>
+        <div class="card stage rv"><span class="when">Later</span><ul><li>Proper desktop app: signed, tiny, no bloat</li><li>Any AI brain, including free local ones</li><li>Curated add-ons: hand-picked, locked, no sketchy marketplace</li></ul></div>
+      </div>
+      <div class="progress rv"><span class="l">build progress</span><div class="bar"><i data-w="9"></i></div><span class="r">Stage 1 · the walls</span></div>
+    </section>
+
+    <div class="starbox rv" style="margin-top:40px"><div><div class="t">Want it to run on your brain of choice?</div><div class="s">Star the repo and open a discussion with which model you'd plug in. Demand sets the order.</div></div><a class="btn" href="https://github.com/GeneralDussDuss/apollo" target="_blank" rel="noopener">★ Star this repo</a></div>
+
+    <div class="next"><span class="lbl">Next</span><a class="big" href="join.html">Get in →</a></div>
+  </main>
+  <footer><span>Apollo · built by <a href="https://github.com/GeneralDussDuss" target="_blank" rel="noopener">GeneralDussDuss</a> · 2026</span><span><a href="https://github.com/GeneralDussDuss/apollo" target="_blank" rel="noopener">github.com/GeneralDussDuss/apollo</a> · ★ <a href="https://github.com/GeneralDussDuss/apollo/stargazers" target="_blank" rel="noopener">star it</a> · <a href="https://github.com/GeneralDussDuss/apollo/discussions" target="_blank" rel="noopener">discussions</a></span></footer>
+</div>
+<script src="shared.js"></script>
+</body>
+</html>
