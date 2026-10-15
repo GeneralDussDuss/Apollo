@@ -8,8 +8,8 @@
   <a href="https://generaldussduss.github.io/Apollo/">🌐 Read the story at generaldussduss.github.io/Apollo</a>
 </p>
 <p align="center">
-  <a href="https://github.com/GeneralDussDuss/Apollo/stargazers"><img src="https://img.shields.io/github/stars/GeneralDussDuss/apollo?style=flat&color=d4a84b&labelColor=070608" alt="Stars"></a>
-  <a href="https://github.com/GeneralDussDuss/Apollo/releases"><img src="https://img.shields.io/github/v/release/GeneralDussDuss/apollo?include_prereleases&style=flat&color=2ecc8f&labelColor=070608" alt="Release"></a>
+  <a href="https://github.com/GeneralDussDuss/Apollo/stargazers"><img src="https://img.shields.io/github/stars/GeneralDussDuss/Apollo?style=flat&color=d4a84b&labelColor=070608" alt="Stars"></a>
+  <a href="https://github.com/GeneralDussDuss/Apollo/releases"><img src="https://img.shields.io/github/v/release/GeneralDussDuss/Apollo?include_prereleases&style=flat&color=2ecc8f&labelColor=070608" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-bfb3a0?style=flat&labelColor=070608" alt="License"></a>
 </p>
 
